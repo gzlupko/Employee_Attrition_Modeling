@@ -459,6 +459,44 @@ confusionMatrix(conf_matrix_2_test)
 
 
 
+# V) Risk Evaluation & ROI Calculations 
+
+
+# filter for current employees only 
+# then use tidypredict_to_column() to assign risk scores  
+
+
+# generate column of risk scores column in table of current employees 
+
+employee_current <- employee %>%
+  filter(Attrition == "No")
+
+
+employee_current$churn_risk <- predict(model_final, newdata = employee_current, 
+                                       type = "response") 
+
+# check random employees' churn risk 
+employee_current$churn_risk[c(100, 1003)]
+
+
+# break churn risk into buckets 
+
+employee_risk <- employee_current %>%
+  mutate(risk_level = cut(churn_risk, breaks = c(0, 0.2, 0.3, 0.5, 1), 
+                          labels = c("no-risk", "low-risk",
+                                     "medium-risk", "high-risk")))
+
+
+employee_risk %>%
+  group_by(risk_level) %>%
+  count(risk_level) 
+
+
+# ROI calculations 
+
+
+
+
 
 
 
