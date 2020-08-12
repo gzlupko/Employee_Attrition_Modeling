@@ -460,19 +460,5 @@ confusionMatrix(conf_matrix_2_test)
 
 
 
-# test git commit update to file 
-
-
-# test git commit after moving file path 
-
-
-new_object <- "git-test-commit"
-
-# did this commit take? 
-
-
-
-
-
 
 
