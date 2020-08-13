@@ -492,7 +492,74 @@ employee_risk %>%
   count(risk_level) 
 
 
-# ROI calculations 
+Develop new model to test change in probability distribution
+
+install.packages("caTools")
+library(caTools)
+
+
+View(employee)
+
+# select shorter list of predictors for new logit model 
+# pull from  information value matrix 
+
+
+
+# split data 
+
+split <- sample.split(employee, SplitRatio = 0.7) 
+split
+train <- subset(employee, split == "TRUE")
+test <- subset(employee, split == "FALSE") 
+
+
+
+
+
+
+IV
+
+new_logit <- glm(turnover ~ JobRole + MonthlyIncome + OverTime + JobLevel + 
+                   TotalWorkingYears + YearsAtCompany + Age, 
+                 family = "binomial", data = train) 
+vif(new_logit)
+summary(new_logit)
+
+
+new_logit_train_predict <- predict(new_logit, 
+                                   newdata = train, type = "response") 
+hist(new_logit_train_predict)
+
+
+# run new model through test data set; check for 
+# similarity in prediction distribution
+
+new_logit_test_predict <- predict(new_logit, 
+                                  newdata = test, type = "response") 
+hist(new_logit_test_predict)
+
+
+
+# confusion matrix 
+
+
+new_logit_conf_matrix <- table(train$turnover, new_logit_train_predict > 0.5) 
+
+new_logit_conf_matrix
+
+(new_logit_conf_matrix[[1,1]] + new_logit_conf_matrix[[2,2]]) / sum(new_logit_conf_matrix)
+
+# can also use caret package confusionMatrix() for more detailed summary 
+# Classify predictions using a cut-off of 0.5
+
+new_logit_prediction_categories <- ifelse(new_logit_test_predict > 0.5, 1, 0)
+
+# Construct a confusion matrix
+new_logit_conf_matrix <- table(new_logit_prediction_categories, test$turnover)
+new_logit_conf_matrix
+
+confusionMatrix(new_logit_conf_matrix)
+
 
 
 
