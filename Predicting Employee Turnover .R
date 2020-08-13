@@ -19,6 +19,7 @@ library(broom)
 # visualization 
 library(ggplot2) 
 library(RColorBrewer) 
+library(gridExtra)
 
 # classification and model testing 
 library(Information)
@@ -120,35 +121,65 @@ employee_filter %>%
 # summarize total employee count in dataset by gender, department, job level, 
 # education, job role 
 
-employee_filter %>%
-  count(Gender)
-employee_filter %>%
-  count(Department)
-employee_filter %>%
-  count(JobLevel)
-employee_filter %>%
-  count(Education)
-employee_filter %>%
-  count(JobRole)
+gender_count <- employee_filter %>%
+  count(Gender) %>%
+  ggplot(aes(x = Gender, y = n, fill = Gender)) + 
+  geom_bar(stat = "identity") + theme(legend.position = "none")
+
+department_count <- employee_filter %>%
+  count(Department) %>%
+  ggplot(aes(x = Department, y = n, fill = Department)) + 
+  geom_bar(stat = "identity") + 
+  theme(axis.text.x = element_blank(), legend.position = "none")
+
+level_count <- employee_filter %>%
+  count(JobLevel) %>%
+  ggplot(aes(x = JobLevel, y = n, fill = JobLevel)) + 
+  geom_bar(stat = "identity") + theme(legend.position = "none")
+
+role_count <- employee_filter %>%
+  count(JobRole) %>%
+  ggplot(aes(x = JobRole, y = n, fill = JobRole)) + 
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_blank(), legend.position = "none")
+
+grid.arrange(gender_count, department_count, level_count, role_count)
 
 
 # summarize employee count in subgroups for current employees only 
 
-employee_filter %>%
+gender_current <- employee_filter %>%
   filter(Attrition == "No") %>%
-  count(Gender)
-employee_filter %>%
+  count(Gender) %>%
+  ggplot(aes(x = Gender, y = n, fill = Gender)) + 
+  geom_bar(stat = "identity") + theme(legend.position = "none") + 
+  ylab("") 
+
+department_current <- employee_filter %>%
   filter(Attrition == "No") %>%
-  count(Department)
-employee_filter %>%
+  count(Department) %>%
+  ggplot(aes(x = Department, y = n, fill = Department)) + 
+  geom_bar(stat = "identity") + 
+  theme(axis.text.x = element_blank(), legend.position = "none") + 
+  ylab("") 
+
+level_current <- employee_filter %>%
   filter(Attrition == "No") %>%
-  count(JobLevel)
-employee_filter %>%
+  count(JobLevel) %>%
+  ggplot(aes(x = JobLevel, y = n, fill = JobLevel)) + 
+  geom_bar(stat = "identity") + theme(legend.position = "none") + 
+  ylab("") 
+
+role_current <- employee_filter %>%
   filter(Attrition == "No") %>%
-  count(Education)
-employee_filter %>%
-  filter(Attrition == "No") %>%
-  count(JobRole)
+  count(JobRole) %>%
+  ggplot(aes(x = JobRole, y = n, fill = JobRole)) + 
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_blank(), legend.position = "none") + 
+  ylab("") 
+
+grid.arrange(gender_current, department_current, level_current, role_current)
+
 
 
 # - - - - - - - - - - -
