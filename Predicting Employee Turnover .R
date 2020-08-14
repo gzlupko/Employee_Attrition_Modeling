@@ -1,6 +1,3 @@
-# Copy script - Predicting Employee Turnover 
-# Git upload
-
 
 #IBM Employee Attrition & Performance Data 
 
