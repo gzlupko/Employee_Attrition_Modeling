@@ -1,7 +1,7 @@
-# Copy script - Predicting Employee Turnover 
-# Git upload
+<<<<<<< HEAD
+=======
 
-
+>>>>>>> bae979534d243ba35e9cc95a80b0c617af6628fc
 #IBM Employee Attrition & Performance Data 
 
 getwd()
@@ -26,6 +26,7 @@ library(Information)
 library(caret) 
 library(car) 
 library(tidypredict)
+library(caTools) 
 
 # - - - - - - - - - - - - - - - -
 # Import dataset 
@@ -590,6 +591,68 @@ new_logit_conf_matrix <- table(new_logit_prediction_categories, test$turnover)
 new_logit_conf_matrix
 
 confusionMatrix(new_logit_conf_matrix)
+
+
+
+
+library(class) 
+
+# kNN take 2 
+
+head(employee) 
+View(employee)
+
+
+
+
+
+em <- employee %>%
+  ungroup(JobLevel) %>%
+  select(Attrition, DailyRate, EnvironmentSatisfaction, PerformanceRating, 
+         RelationshipSatisfaction)
+
+head(em)
+str(em)
+table(em$Attrition)
+
+
+
+
+ran <- runif(nrow(em)) 
+ran
+
+em <- em [order(ran), ]
+
+normalize <- function(x) { 
+  return ((x - min(x)) / (max(x) - min(x))) }
+
+em_norm <- as.data.frame(lapply(em[2:5], normalize)) 
+str(em_norm)
+
+1470 * 0.7
+1470- 1029
+sqrt(1470)
+head(em)
+em_train <- em_norm[1:1029, ]
+em_test <- em_norm[1030:1470, ]
+em_train_target <- em$Attrition[1:1029] 
+em_test_target <- em$Attrition[1030:1470] 
+class(em_train_target) 
+class(em_test_target) 
+
+
+
+# kNN classifying attrition 
+
+library(class) 
+library(caret) 
+em_test_pred <- knn(train = em_train, test = em_test, cl = em_train_target, 
+                    k = 38)
+
+
+tab <- table(em_test_pred, em_test_target)
+tab
+
 
 
 
