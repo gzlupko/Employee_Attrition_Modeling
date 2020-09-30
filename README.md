@@ -15,3 +15,8 @@ V) Logistic Regression Modeling and Validation
 VI) k-Nearest Neighbors Classifier
 VII) Risk Assessment
 VIII) Workforce Retention Strategy
+
+
+For the analytics and documentation on this project's code, please follow the below link to my accompanying Kaggle notebook: 
+
+https://www.kaggle.com/gianzlupko/predicting-employee-churn-proposing-intervention
