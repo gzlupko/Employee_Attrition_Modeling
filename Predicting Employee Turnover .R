@@ -37,9 +37,6 @@ employee_data <- read_csv("IBM_employee_data.csv")
 head(employee_data)
 View(employee_data)
 
-
-
-# test git upload 
 # - - - - - - - - - - - - - - - 
 # Data Cleaning - data type conversions, drop columns, etc 
 
