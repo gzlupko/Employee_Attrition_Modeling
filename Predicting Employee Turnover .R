@@ -20,6 +20,8 @@ library(broom)
 library(ggplot2) 
 library(RColorBrewer) 
 library(gridExtra)
+library(wesanderson)
+
 
 # classification and model testing 
 library(Information)
@@ -68,6 +70,7 @@ class(employee_filter$turnover)
 # - - - - - - - - - - - - - - 
 # Exploratory Data Analysis: 
 
+
 # I) Attrition breakdown across the organization and within... 
 
 
@@ -80,11 +83,15 @@ employee_filter %>%
   scale_x_discrete(labels = c("Active", "Inactive")) + 
   theme(axis.title.x = element_blank()) + ylab("Employee Count") + 
   theme(legend.position = "none") + 
-  geom_text(stat = "count", aes(label = ..count..), vjust = -.5)
+  geom_text(stat = "count", aes(label = ..count..), vjust = -.5) + 
+  theme(text = element_text(size = 10)) + 
+  ggtitle("Total Active and Inactive Employees in Sample") + 
+  scale_fill_brewer(palette = "Paired")
 
 
 # Visualize attrition within enterprise subgroups 
 # first is attrition within department
+
 
 employee_filter %>%
   group_by(Department) %>%
@@ -92,7 +99,8 @@ employee_filter %>%
   ggplot(aes(x = reorder(Department, -turnover_rate),y = turnover_rate)) + 
   geom_bar(stat = "identity", aes(fill = Department)) + 
   theme(axis.title.x = element_blank()) + ylab("Turnover Rate") + 
-  scale_x_discrete(labels = c("Sales", "HR", "R&D"))
+  scale_x_discrete(labels = c("Sales", "HR", "R&D")) + 
+  ggtitle("Turnover Rate by Department")  + scale_fill_brewer(palette = "Paired") 
 
 
 # Attrition by gender 
@@ -103,7 +111,8 @@ employee_filter %>%
   ggplot(aes(Gender, turnover_rate))  + 
   geom_bar(stat = "identity", aes(fill = Gender)) + 
   theme(axis.title.x = element_blank()) + ylab("Turnover Rate") + 
-  theme(legend.position = "none")
+  theme(legend.position = "none") + scale_fill_brewer(palette = "Paired") + 
+  ggtitle("Turnover Rate by Gender")
 
 
 # Attrition by Job Level 
@@ -114,7 +123,9 @@ employee_filter %>%
   ggplot(aes(JobLevel, turnover_rate))  + 
   geom_bar(stat = "identity", aes(fill = JobLevel)) + 
   theme(axis.title.x = element_blank()) + ylab("Turnover Rate") +
-  theme(legend.position = "none")
+  theme(legend.position = "none") + scale_fill_brewer(palette = "Paired") + 
+  ggtitle("Turnover Rate by Job Level")
+
 
 
 
@@ -124,26 +135,36 @@ employee_filter %>%
 gender_count <- employee_filter %>%
   count(Gender) %>%
   ggplot(aes(x = Gender, y = n, fill = Gender)) + 
-  geom_bar(stat = "identity") + theme(legend.position = "none")
+  geom_bar(stat = "identity") + theme(legend.position = "none") + 
+  scale_fill_brewer(palette = "Paired")  + ylab("Count") +
+  theme(axis.title.y = element_blank())
 
 department_count <- employee_filter %>%
   count(Department) %>%
   ggplot(aes(x = Department, y = n, fill = Department)) + 
   geom_bar(stat = "identity") + 
-  theme(axis.text.x = element_blank(), legend.position = "none")
+  theme(axis.text.x = element_blank(), legend.position = "none") +
+  scale_fill_brewer(palette = "Paired") +
+  theme(axis.title.y = element_blank()) 
 
 level_count <- employee_filter %>%
   count(JobLevel) %>%
   ggplot(aes(x = JobLevel, y = n, fill = JobLevel)) + 
-  geom_bar(stat = "identity") + theme(legend.position = "none")
+  geom_bar(stat = "identity") + theme(legend.position = "none") + 
+  scale_fill_brewer(palette = "Paired") +
+  theme(axis.title.y = element_blank())
 
 role_count <- employee_filter %>%
   count(JobRole) %>%
   ggplot(aes(x = JobRole, y = n, fill = JobRole)) + 
   geom_bar(stat = "identity") +
-  theme(axis.text.x = element_blank(), legend.position = "none")
+  theme(axis.text.x = element_blank(), legend.position = "none") + 
+  scale_fill_brewer(palette = "Paired") +
+  theme(axis.title.y = element_blank()) 
 
-grid.arrange(gender_count, department_count, level_count, role_count)
+grid.arrange(gender_count, department_count, level_count, role_count, 
+             top = "Employee Count by Demography, Position, and Tenure")
+
 
 
 # summarize employee count in subgroups for current employees only 
@@ -153,7 +174,7 @@ gender_current <- employee_filter %>%
   count(Gender) %>%
   ggplot(aes(x = Gender, y = n, fill = Gender)) + 
   geom_bar(stat = "identity") + theme(legend.position = "none") + 
-  ylab("") 
+  ylab("") + scale_fill_brewer(palette = "Paired") 
 
 department_current <- employee_filter %>%
   filter(Attrition == "No") %>%
@@ -161,14 +182,14 @@ department_current <- employee_filter %>%
   ggplot(aes(x = Department, y = n, fill = Department)) + 
   geom_bar(stat = "identity") + 
   theme(axis.text.x = element_blank(), legend.position = "none") + 
-  ylab("") 
+  ylab("") + scale_fill_brewer(palette = "Paired") 
 
 level_current <- employee_filter %>%
   filter(Attrition == "No") %>%
   count(JobLevel) %>%
   ggplot(aes(x = JobLevel, y = n, fill = JobLevel)) + 
   geom_bar(stat = "identity") + theme(legend.position = "none") + 
-  ylab("") 
+  ylab("") + scale_fill_brewer(palette = "Paired") 
 
 role_current <- employee_filter %>%
   filter(Attrition == "No") %>%
@@ -176,9 +197,31 @@ role_current <- employee_filter %>%
   ggplot(aes(x = JobRole, y = n, fill = JobRole)) + 
   geom_bar(stat = "identity") +
   theme(axis.text.x = element_blank(), legend.position = "none") + 
-  ylab("") 
+  ylab("") + scale_fill_brewer(palette = "Paired") 
 
-grid.arrange(gender_current, department_current, level_current, role_current)
+grid.arrange(gender_current, department_current, level_current, role_current,
+             top = ("Employee Counts - Active Only")) 
+
+
+# Density curves EDA 
+
+
+employee %>%
+  ggplot() + 
+  geom_density(aes(x = PercentSalaryHike, fill = Department), alpha = 0.3) + 
+  scale_fill_manual(values = wes_palette("Darjeeling1"))
+
+employee %>%
+  ggplot() + 
+  geom_density(aes(x = PercentSalaryHike, fill = Gender), alpha = 0.3) + 
+  scale_fill_manual(values = wes_palette("Darjeeling1"))
+
+
+employee %>%
+  ggplot() + 
+  geom_density(aes(x = PercentSalaryHike, fill = Gender), alpha = 0.3) + 
+  scale_fill_manual(values = wes_palette("Darjeeling1"))
+
 
 
 
@@ -192,6 +235,19 @@ employee <- employee_filter %>%
   mutate(hipo = ifelse(PerformanceRating == "4", 1, 0)) 
 View(employee)
 
+employee %>%
+  count(hipo) 
+View(employee) 
+
+employee %>%
+  ggplot() + 
+  geom_density(aes(x = hipo, fill = Department), alpha = 0.3) + 
+  scale_fill_manual(values = wes_palette("Darjeeling1"))
+
+employee %>%
+  ggplot() + 
+  geom_density(aes(x = PercentSalaryHike, fill = Gender), alpha = 0.3) + 
+  scale_fill_manual(values = wes_palette("Darjeeling1"))
 
 # Disengaged Employeess
 employee <- employee %>%
@@ -235,6 +291,8 @@ employee %>%
 employee <- employee %>%
   mutate(job_hop = (TotalWorkingYears/ (NumCompaniesWorked + 1))) 
 
+employee %>%
+  ggplot() + geom_density(aes(x = job_hop)) + xlab("Density") + ylab("Job Hop Index") 
 
 
 # - - - - - - - - - - - -
@@ -256,8 +314,9 @@ employee %>%
   group_by(Attrition) %>%
   summarize(avg_disengagement = mean(disengaged)) %>%
   ggplot(aes(Attrition, avg_disengagement)) + geom_col(aes(fill = Attrition)) + 
-  xlab("Left Company?") + ylab("Proportion Disengaged") + 
-  theme(legend.position = "none")
+  xlab("Left Company?") + ylab("% Disengaged") + 
+  theme(legend.position = "none") + scale_fill_brewer(palette = "Paired") + 
+  ggtitle("Attrition by Disengaged")
 
 t.test(disengaged ~ Attrition, data = employee) %>%
   tidy()
