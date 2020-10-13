@@ -277,6 +277,14 @@ employee <- employee %>%
 employee$compa_level[705]
 
 
+employee %>%
+  ggplot() + 
+  geom_density(aes(x = JobLevel, fill = MonthlyIncome)) + 
+  theme(text = element_text(size = 12)) + scale_fill_brewer(palette = "Paired") 
+
+
+
+
 # Annualized Salary
 
 employee <- employee %>%
