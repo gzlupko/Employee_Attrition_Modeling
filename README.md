@@ -20,3 +20,14 @@ VIII) Workforce Retention Strategy
 For the analytics and documentation on this project's code, please follow the below link to my accompanying Kaggle notebook: 
 
 https://www.kaggle.com/gianzlupko/predicting-employee-churn-proposing-intervention
+
+
+
+
+![alt text](https://github.com/gzlupko/People_Analytics/blob/master/EDA_2.png) 
+
+
+
+![alt text](https://github.com/gzlupko/People_Analytics/blob/master/EDA_1.png)
+
+
