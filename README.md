@@ -24,7 +24,7 @@ https://www.kaggle.com/gianzlupko/predicting-employee-churn-proposing-interventi
 
 
 
-![alt text](https://github.com/gzlupko/People_Analytics/blob/master/EDA_2.png) 
+![alt text](https://github.com/gzlupko/People_Analytics/blob/master/EDA_2.png =250x250) 
 
 
 
