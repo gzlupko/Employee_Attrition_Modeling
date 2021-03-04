@@ -5,7 +5,6 @@ I also explore the implementation of the k-Nearest Neighbors algorithm to predic
 
 Finally, after model validation, I explore the business case for possible HR intervention strategies. Discussion on intervention strategy and ROI estimates draw on recent research in HR and management journals around the cost of employee turnover.
 
-Thanks for feedback on my code and on my line of thinking for these analyses. I wanted to approach a popular dataset for my first Kaggle project to troubleshoot as needed. This is a draft notebook that I am in the process of updating.
 
 I) Import and Clean Data
 II) EDA
