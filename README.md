@@ -1,4 +1,4 @@
-# People_Analytics
+# Attrition Modeling
 The goal of this notebook is to explore the development of a risk model that forecasts the likelihood of employee attrition. First, I clean and explore the dataset to prepare it for subsequent analyses. After reviewing the organization's demographic and performance characteristics through EDA and feature engineering techniques, I generate two logistic regression models that predict employee turnover. The first regression model takes a large set of predictors while the second model includes only seven.
 
 I also explore the implementation of the k-Nearest Neighbors algorithm to predict employee attrition based on a host of predictors.
